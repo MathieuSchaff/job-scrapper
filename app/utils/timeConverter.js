@@ -1,0 +1,23 @@
+function convertTimeString(timeStr) {
+  if (timeStr === "hier") {
+    return "1d";
+  } else if (timeStr === "avant-hier") {
+    return "2d";
+  } else if (timeStr.endsWith("heures")) {
+    return timeStr;
+  } else {
+    const match = timeStr.match(/il y a (\d+) (jour|mois)/);
+    if (match) {
+      const num = parseInt(match[1]);
+      const unit = match[2];
+      if (unit === "jour") {
+        return `${num}d`;
+      } else if (unit === "mois") {
+        return `${num} mois`;
+      }
+    }
+  }
+
+  return null;
+}
+module.exports = convertTimeString;
