@@ -2,7 +2,7 @@ const { chromium } = require("playwright");
 
 const dotenv = require("dotenv");
 const getRandomInt = require("./../utils/randomInt");
-// const convertTimeString = require("./../utils/timeConverter");
+const convertTimeString = require("./../utils/timeConverter");
 dotenv.config();
 // // const email = process.env.WTTJGL_EMAIL;
 // // const mdpWttjgl = process.env.WTTJGL_PASSWD;
@@ -274,10 +274,14 @@ const locationSearch = process.env.WTTJGL_LOCATION;
       );
       const time = await article.textContent("p time span");
       const formatedTime = convertTimeString(time);
-      const tags = await article
-        .locator("div > div > div:nth-child(2) div:nth-child(3) span")
-        .textContent();
-
+      const tagsLocators = article.locator(
+        "div > div > div:nth-child(2) div:nth-child(3) span"
+      );
+      const tags = [];
+      for (let i = 0; i < (await tagsLocators.count()); i++) {
+        const tag = await tagsLocators.nth(i).textContent();
+        tags.push(tag);
+      }
       // const newTab = await browser.newPage();
       // await newTab.waitForTimeout(getRandomInt(2000, 5000));
       // await newTab.goto(link);
