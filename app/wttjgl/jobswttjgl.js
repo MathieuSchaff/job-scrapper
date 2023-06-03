@@ -10,6 +10,8 @@ const website = process.env.WTTJGL_WEBSITE;
 const jobSearch = process.env.WTTJGL_SEARCH;
 const numOfPages = process.env.WTTJGL_NUMPAGES;
 const locationSearch = process.env.WTTJGL_LOCATION;
+const email = process.env.WTTJGL_EMAIL;
+const mdpWttjgl = process.env.WTTJGL_PASSWD;
 
 // async function getWttJglJobOffers(page) {
 (async () => {
@@ -28,55 +30,47 @@ const locationSearch = process.env.WTTJGL_LOCATION;
   await page.goto(website);
   // time out to wait for the page to load
   await page.mainFrame().waitForSelector("header");
+
   // LOGIN BLOCK
-  // THIS COMMENTED BLOCK IS IF YOU WANT TO LOGIN TO WTTJGL
-  //
-  // const loginButton = await page.$('[data-testid="header-user-links-toggle"]');
-  // if (!loginButton) {
-  //   console.log("entered login button is not here");
-  //   // Wait for the button to be rendered
-  //   await page.waitForSelector('[data-testid="header-user-button-login"]');
-  //
-  //   // Click on the button
-  //   await page.click('[data-testid="header-user-button-login"]');
-  //   // Random delay
-  //   await page.waitForTimeout(getRandomInt(2000, 5000));
-  //
-  //   // Wait for the email input field to be rendered
-  //   await page.waitForSelector('[data-testid="login-field-email"]');
-  //
-  //   // Type into the email input field with a delay between key presses
-  //   await page.type(
-  //     '[data-testid="login-field-email"]',
-  //     email,
-  //     { delay: getRandomInt(50, 150) },
-  //   );
-  //
-  //   // Random delay
-  //   await page.waitForTimeout(getRandomInt(2000, 5000));
-  //
-  //   // Wait for the password input field to be rendered
-  //   await page.waitForSelector('[data-testid="login-field-password"]'); // Update this selector
-  //
-  //   // Type into the password input field with a delay between key presses
-  //   await page.type('[data-testid="login-field-password"]', mdpWttjgl, {
-  //     delay: getRandomInt(50, 150),
-  //   }); // Update this selector
-  //
-  //   // Random delay
-  //   await page.waitForTimeout(getRandomInt(2000, 5000));
-  //
-  //   // Wait for the submit button to be rendered
-  //   await page.waitForSelector('[data-testid="login-button-submit"]');
-  //
-  //   // Click the submit button
-  //   await page.click('[data-testid="login-button-submit"]');
-  // }
-  //
-  // END OF LOGIN BLOCK
-  //
-  //
-  // //
+  const loginButtons = page.locator('[data-testid="header-user-button-login"]');
+
+  if ((await loginButtons.count()) > 0) {
+    console.log("entered login button is here");
+    const firstLoginButton = loginButtons.nth(0); // If you want the second, use nth(1)
+
+    // Wait for the button to be attached to the DOM
+    await firstLoginButton.waitFor({ state: "attached" });
+
+    // Click on the button
+    await firstLoginButton.click();
+
+    // Wait for the email input field to be rendered
+    const emailInput = await page.locator('[data-testid="login-field-email"]');
+    await emailInput.waitFor({ state: "visible" });
+
+    // Type into the email input field with a delay between key presses
+    await emailInput.type(email, { delay: getRandomInt(50, 150) });
+
+    // Wait for the password input field to be rendered
+    const passwordInput = await page.locator(
+      '[data-testid="login-field-password"]'
+    );
+    await passwordInput.waitFor({ state: "visible" });
+
+    // Type into the password input field with a delay between key presses
+    await passwordInput.type(mdpWttjgl, { delay: getRandomInt(50, 150) });
+
+    // Random delay
+
+    // Wait for the submit button to be rendered
+    const submitButton = await page.locator(
+      '[data-testid="login-button-submit"]'
+    );
+    await submitButton.waitFor({ state: "visible" });
+
+    // Click the submit button
+    await submitButton.click();
+  }
   // // BLOCK CONTRACT TYPE
   // //
   // // await page.waitForTimeout(getRandomInt(2000, 5000));
