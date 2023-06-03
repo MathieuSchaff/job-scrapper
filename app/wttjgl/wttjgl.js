@@ -1,4 +1,5 @@
 const { chromium } = require("playwright");
+
 const website =
   "https://www.welcometothejungle.com/en/companies/alltricks/jobs/lead-frontend-javascript-react-h-f_saint-quentin-en-yvelines";
 (async () => {
