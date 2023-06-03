@@ -75,64 +75,7 @@ const locationSearch = process.env.WTTJGL_LOCATION;
   //
   // END OF LOGIN BLOCK
   //
-  // BLOCK FOR JOB SEARCH
-  // !!!!!!!!!!!!!!!!!!!!!!!
-  // await page.waitForTimeout(getRandomInt(2000, 5000));
-  // // Wait for the "Find a job" link to be rendered
-  // // await page.waitForSelector('[data-testid="menu-jobs"] a');
-  // await page.waitForSelector('[data-testid="menu-jobs"] a', { state: 'attached' });
-  // // Click the "Find a job" link
-  // await page.click('[data-testid="menu-jobs"] a');
-  // // await page.waitForTimeout(getRandomInt(2000, 5000));
   //
-  // // Wait for the input field to be rendered
-  // // await page.waitForSelector('[data-testid="jobs-home-search-field-query"]');
-  // await page.waitForSelector('[data-testid="jobs-home-search-field-query"]', { state: 'visible' });
-  // const buttonJob = await page.locator(
-  //   '[data-testid="jobs-home-search-field-query"]'
-  // );
-  // // Focus on the input field
-  // // await page.focus('[data-testid="jobs-home-search-field-query"]');
-  // await buttonJob.focus();
-  // // Type in the input field with delay
-  // await buttonJob.type(jobSearch, {
-  //   delay: getRandomInt(100, 500),
-  // });
-  // // // Press Enter
-  // await buttonJob.press("Enter");
-  // await page.waitForTimeout(getRandomInt(2000, 5000));
-  // //
-  // // // // BLOCK FOR LOCATION
-  // //
-  // await page.waitForSelector(
-  //   '[data-testid="jobs-home-search-field-location"] + div button'
-  // );
-  // const clearButton = await page.$(
-  //   '[data-testid="jobs-home-search-field-location"] + div button'
-  // );
-  // // await page.click('button[title="Clear"]');
-  // await clearButton.click();
-  // //
-  // await page.waitForTimeout(getRandomInt(2000, 5000));
-  // // Wait for the location input field
-  // await page.waitForSelector('[data-testid="jobs-home-search-field-location"]');
-  // //
-  // const buttonLocation = await page.$(
-  //   '[data-testid="jobs-home-search-field-location"]'
-  // );
-  // // // Focus on the location input field
-  // await buttonLocation.focus('[data-testid="jobs-home-search-field-location"]');
-  // //
-  // // // Type in the location input field with delay
-  // await buttonLocation.type(locationSearch, {
-  //   delay: getRandomInt(100, 500),
-  // });
-  // //
-  // // // Press Enter
-  // await buttonLocation.press("Enter");
-  // await page.waitForTimeout(getRandomInt(2000, 5000));
-  // //
-  // // // END OF LOCATION BLOCK
   // //
   // // BLOCK CONTRACT TYPE
   // //
@@ -163,66 +106,6 @@ const locationSearch = process.env.WTTJGL_LOCATION;
   // // await page.click(`#${buttonId}`);
   // // END OF BLOCK CONTRACT JOBS
   // // header + div div
-  // const jobs = [];
-  // for (let i = 0; i < numOfPages; i++) {
-  //   let list = await page.$('[data-testid="search-results"]');
-  //   await page.waitForSelector(".ais-Hits-list-item");
-  //   let articles = await list.$$(".ais-Hits-list-item");
-  //   // const articles = await page.$$(".ais-Hits-list-item");
-  //   for (const article of articles) {
-  //     // const title = await page.evaluate(job => el.querySelector(""))
-  //     const companyName = await article.$eval(
-  //       "div > div > div",
-  //       (el) => el.innerText
-  //     );
-  //     const title = await article.$eval("h4", (el) => el.innerText.trim());
-  //     const link = await article.$eval(
-  //       "a", // replace with actual selector for the link
-  //       (el) => el.href
-  //     );
-  //     const secondPartOfJobItem = await article.$(
-  //       "div > div > div:nth-child(2)"
-  //     );
-  //     const location = await secondPartOfJobItem.$eval(
-  //       "div p",
-  //       (el) => el.innerText
-  //     );
-  //     const time = await article.$eval("p time span", (el) => el.textContent);
-  //     const formatedTime = convertTimeString(time);
-  //     // will create a array with tags inside of type toString
-  //     const tagsContainer = await secondPartOfJobItem.$("div:nth-child(3)");
-  //     const tags = await tagsContainer.$$eval("span", (elements) =>
-  //       elements.map((el) => el.textContent)
-  //     );
-  //     const newTab = await browser.newPage();
-  //     await newTab.waitForTimeout(getRandomInt(2000, 5000));
-  //     await newTab.goto(link);
-  //     await newTab.waitForTimeout(getRandomInt(2000, 5000));
-  //     const mainDiv = await newTab.$("main > div:nth-child(2) > div > div");
-  //
-  //     jobs.push({
-  //       title,
-  //       link,
-  //       formatedTime,
-  //       location,
-  //       tags,
-  //       company: companyName,
-  //     });
-  //     // jobs.push({ title, link, time company: companyName });
-  //   }
-  //   const nextButton = await page.$(
-  //     'nav[aria-label="Pagination"] ul.sc-1qf12yi-1 li:last-child a'
-  //   );
-  //   // If Next button exists, then click it
-  //   if (nextButton) {
-  //     // Click on the Next button
-  //     await nextButton.click();
-  //   }
-  //   await page.waitForTimeout(getRandomInt(2000, 5000));
-  // }
-  // !!!!!!!!!!!!!!!!!!!
-  //
-  // await page.waitForTimeout(getRandomInt(2000, 5000));
   const jobLink = page.getByRole("link", { name: "Find a job", exact: true });
   // const jobLink = page.locator('[data-testid="menu-jobs"] a');
   await jobLink.waitFor({ state: "attached" });
@@ -253,8 +136,6 @@ const locationSearch = process.env.WTTJGL_LOCATION;
     delay: getRandomInt(100, 500),
   });
   await locationSearchButton.press("Enter");
-
-  // await page.waitForTimeout(getRandomInt(2000, 5000));
 
   const jobs = [];
 
