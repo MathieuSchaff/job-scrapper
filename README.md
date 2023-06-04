@@ -30,3 +30,22 @@ If the contract type is a string, the function finds the object in the `contract
 
 Note: If you specify a contract type that isn't in the list above, or a number that's outside the range of the list,
 the `getContractTypeId` function will return `null`, and the script will search for all types of jobs.
+
+## Remote Work Option
+
+This script also allows you to choose a remote work option when searching for jobs. The available options are:
+
+    no - Unknown
+    punctual - Occasional remote
+    partial - Partial remote
+    fulltime - Open to full remote
+
+You can set the remote work option in the .env file with the key REMOTE_WORK_OPTION.
+
+Example:
+WTTJGL_REMOTE_WORK_OPTION=partial
+
+WTTJGL_REMOTE_WORK_OPTION=all
+
+If set to all, it will search for all.
+It undefined or null, will search for all contract type remote or not remote friendly etc
