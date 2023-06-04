@@ -1,4 +1,6 @@
 function convertTimeString(timeStr) {
+  if (!timeStr) return null;
+  if (timeStr === "Promoted") return "No time/Promoted";
   if (timeStr === "hier") {
     return "1d";
   } else if (timeStr === "avant-hier") {
@@ -18,6 +20,6 @@ function convertTimeString(timeStr) {
     }
   }
 
-  return null;
+  return timeStr;
 }
 module.exports = convertTimeString;
