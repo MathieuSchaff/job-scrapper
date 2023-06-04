@@ -20,11 +20,9 @@ dotenv.config();
 // // const mdpWttjgl = process.env.WTTJGL_PASSWD;
 const website = process.env.WTTJGL_WEBSITE;
 const jobSearch = process.env.WTTJGL_SEARCH;
-const numOfPages = process.env.WTTJGL_NUMPAGES;
+// const numOfPages = process.env.WTTJGL_NUMPAGES;
 const locationSearch = process.env.WTTJGL_LOCATION;
-const email = process.env.WTTJGL_EMAIL;
-const mdpWttjgl = process.env.WTTJGL_PASSWD;
-
+const myContractType = process.env.WTTJGL_CONTRACT_TYPE;
 (async () => {
   const browser = await chromium.launch({
     headless: false,
@@ -41,10 +39,10 @@ const mdpWttjgl = process.env.WTTJGL_PASSWD;
   await page.goto(website);
   // time out to wait for the page to load
   await page.mainFrame().waitForSelector("header");
-
+  console.log(myContractType);
+  console.log(typeof myContractType);
   // LOGIN BLOCK
-  const loginButtons = page.locator('[data-testid="header-user-button-login"]');
-
+  // const loginButtons = page.locator('[data-testid="header-user-button-login"]');
   // if ((await loginButtons.count()) > 0) {
   //   console.log("entered login button is here");
   //   const firstLoginButton = loginButtons.nth(0); // If you want the second, use nth(1)
@@ -82,66 +80,8 @@ const mdpWttjgl = process.env.WTTJGL_PASSWD;
   // }
   // END OF LOGIN BLOCK
   //
-  // BLOCK CONTRACT TYPE
   //
-
-  await page
-    .locator('[data-testid="jobs-search-select-filter-contract"]')
-    .click({ delay: getRandomInt(100, 500) });
-
-  const contractTypes = [
-    { name: "Permanent contract", id: "jobs-search-filter-contract-FULL_TIME" },
-    { name: "Work-study", id: "jobs-search-filter-contract-APPRENTICESHIP" },
-    { name: "Internship", id: "jobs-search-filter-contract-INTERNSHIP" },
-    {
-      name: "Fixed-term / Temporary",
-      id: "jobs-search-filter-contract-TEMPORARY",
-    },
-    { name: "Other", id: "jobs-search-filter-contract-OTHER" },
-    { name: "Freelance", id: "jobs-search-filter-contract-FREELANCE" },
-    { name: "Part-time", id: "jobs-search-filter-contract-PART_TIME" },
-    {
-      name: "International Corporate Volunteer Program",
-      id: "jobs-search-filter-contract-VIE",
-    },
-    {
-      name: "Graduate program",
-      id: "jobs-search-filter-contract-GRADUATE_PROGRAM",
-    },
-    { name: "Volunteer work", id: "jobs-search-filter-contract-VOLUNTEER" },
-    { name: "IDV", id: "jobs-search-filter-contract-IDV" },
-  ];
-  async function clickContractType(value) {
-    let id;
-    if (typeof value === "number") {
-      // if value is a number, use it as an index
-      id = contractTypes[value].id;
-    } else if (typeof value === "string") {
-      // if value is a string, find the contract type with that name
-      const contractType = contractTypes.find((type) => type.name === value);
-      if (!contractType) {
-        console.error(`No contract type named "${value}" was found.`);
-        return;
-      }
-      id = contractType.id;
-    } else {
-      console.error("The input value must be either a number or a string.");
-      return;
-    }
-    await page.click(`#${id}`);
-  }
-  // Now, you can call the function like this:
-  await clickContractType(2); // by index
-  // or
-  await clickContractType("Internship"); // by name
-  // await page.waitForTimeout(getRandomInt(1000, 3000));
-  //
-  // const buttonId = jobTypeToButtonId[jobType];
-  //
-  // await page.waitForSelector(`#${buttonId}`);
-  // await page.click(`#${buttonId}`);
-  // END OF BLOCK CONTRACT JOBS
-  // header + div div
+  // Go to the job page
   const jobLink = page.getByRole("link", {
     name: "Find a job",
     exact: true,
@@ -175,6 +115,63 @@ const mdpWttjgl = process.env.WTTJGL_PASSWD;
     delay: getRandomInt(100, 500),
   });
   await locationSearchButton.press("Enter");
+  // CONTRACT BLOCK
+  if (
+    myContractType !== undefined &&
+    myContractType !== null &&
+    myContractType !== "all"
+  ) {
+    console.log("entered contract block");
+    await page
+      .locator('[data-testid="jobs-search-select-filter-contract"]')
+      .click({ delay: getRandomInt(100, 500) });
+    const contractTypes = [
+      {
+        name: "Permanent contract",
+        id: "jobs-search-filter-contract-FULL_TIME",
+      },
+      { name: "Work-study", id: "jobs-search-filter-contract-APPRENTICESHIP" },
+      { name: "Internship", id: "jobs-search-filter-contract-INTERNSHIP" },
+      {
+        name: "Fixed-term / Temporary",
+        id: "jobs-search-filter-contract-TEMPORARY",
+      },
+      { name: "Other", id: "jobs-search-filter-contract-OTHER" },
+      { name: "Freelance", id: "jobs-search-filter-contract-FREELANCE" },
+      { name: "Part-time", id: "jobs-search-filter-contract-PART_TIME" },
+      {
+        name: "International Corporate Volunteer Program",
+        id: "jobs-search-filter-contract-VIE",
+      },
+      {
+        name: "Graduate program",
+        id: "jobs-search-filter-contract-GRADUATE_PROGRAM",
+      },
+      { name: "Volunteer work", id: "jobs-search-filter-contract-VOLUNTEER" },
+      { name: "IDV", id: "jobs-search-filter-contract-IDV" },
+    ];
+
+    function getContractTypeId(contractType) {
+      if (!contractType) return null;
+
+      if (Number.isInteger(parseInt(contractType))) {
+        // If contractType is a number, get the corresponding id by index
+        const index = parseInt(contractType) - 1; // adjusting for zero-based indexing
+        return contractTypes[index]?.id || null;
+      } else {
+        // If contractType is a string, find the corresponding id
+        const contract = contractTypes.find((ct) => ct.name === contractType);
+        return contract?.id || null;
+      }
+    }
+    const buttonId = getContractTypeId(myContractType);
+    await page.locator(`#${buttonId}`).click({ delay: getRandomInt(100, 500) });
+    await page
+      .locator('[data-testid="jobs-search-select-filter-contract"]')
+      .click({ delay: getRandomInt(100, 500) });
+  }
+  // END OF BLOCK CONTRACT JOBS
+
   //
   // const jobs = [];
   //
