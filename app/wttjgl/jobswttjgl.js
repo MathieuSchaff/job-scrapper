@@ -11,10 +11,8 @@ dotenv.config();
 const jobSearch = process.env.WTTJGL_SEARCH;
 const numOfPages = process.env.WTTJGL_NUMPAGES;
 const locationSearch = process.env.WTTJGL_LOCATION;
-// const email = process.env.WTTJGL_EMAIL;
-// const mdpWttjgl = process.env.WTTJGL_PASSWD;
-const website =
-  "https://www.welcometothejungle.com/en/jobs?refinementList%5Boffices.country_code%5D%5B%5D=FR&query=frontend%20developer&page=1";
+const email = process.env.WTTJGL_EMAIL;
+const mdpWttjgl = process.env.WTTJGL_PASSWD;
 
 (async () => {
   const browser = await chromium.launch({
@@ -33,108 +31,106 @@ const website =
   // time out to wait for the page to load
   await page.mainFrame().waitForSelector("header");
 
-  // // LOGIN BLOCK
-  // const loginButtons = page.locator('[data-testid="header-user-button-login"]');
+  // LOGIN BLOCK
+  const loginButtons = page.locator('[data-testid="header-user-button-login"]');
+
+  if ((await loginButtons.count()) > 0) {
+    console.log("entered login button is here");
+    const firstLoginButton = loginButtons.nth(0); // If you want the second, use nth(1)
+
+    // Wait for the button to be attached to the DOM
+    await firstLoginButton.waitFor({ state: "attached" });
+
+    // Click on the button
+    await firstLoginButton.click();
+
+    // Wait for the email input field to be rendered
+    const emailInput = page.locator('[data-testid="login-field-email"]');
+    await emailInput.waitFor({ state: "visible" });
+
+    // Type into the email input field with a delay between key presses
+    await emailInput.type(email, { delay: getRandomInt(50, 150) });
+
+    // Wait for the password input field to be rendered
+    const passwordInput = page.locator('[data-testid="login-field-password"]');
+    await passwordInput.waitFor({ state: "visible" });
+
+    // Type into the password input field with a delay between key presses
+    await passwordInput.type(mdpWttjgl, { delay: getRandomInt(50, 150) });
+
+    // Random delay
+
+    // Wait for the submit button to be rendered
+    const submitButton = await page.locator(
+      '[data-testid="login-button-submit"]'
+    );
+    await submitButton.waitFor({ state: "visible" });
+
+    // Click the submit button
+    await submitButton.click();
+  }
+  // BLOCK CONTRACT TYPE
   //
-  // if ((await loginButtons.count()) > 0) {
-  //   console.log("entered login button is here");
-  //   const firstLoginButton = loginButtons.nth(0); // If you want the second, use nth(1)
-  //
-  //   // Wait for the button to be attached to the DOM
-  //   await firstLoginButton.waitFor({ state: "attached" });
-  //
-  //   // Click on the button
-  //   await firstLoginButton.click();
-  //
-  //   // Wait for the email input field to be rendered
-  //   const emailInput = await page.locator('[data-testid="login-field-email"]');
-  //   await emailInput.waitFor({ state: "visible" });
-  //
-  //   // Type into the email input field with a delay between key presses
-  //   await emailInput.type(email, { delay: getRandomInt(50, 150) });
-  //
-  //   // Wait for the password input field to be rendered
-  //   const passwordInput = await page.locator(
-  //     '[data-testid="login-field-password"]'
-  //   );
-  //   await passwordInput.waitFor({ state: "visible" });
-  //
-  //   // Type into the password input field with a delay between key presses
-  //   await passwordInput.type(mdpWttjgl, { delay: getRandomInt(50, 150) });
-  //
-  //   // Random delay
-  //
-  //   // Wait for the submit button to be rendered
-  //   const submitButton = await page.locator(
-  //     '[data-testid="login-button-submit"]'
-  //   );
-  //   await submitButton.waitFor({ state: "visible" });
-  //
-  //   // Click the submit button
-  //   await submitButton.click();
-  // }
-  // // BLOCK CONTRACT TYPE
-  // //
-  // // await page.waitForTimeout(getRandomInt(2000, 5000));
-  // // // BLOCK FOR TYPE OF JOBS
-  // // await page.waitForSelector(
-  // //   '[data-testid="jobs-search-select-filter-contract"]',
-  // // );
-  // // const jobTypeToButtonId = {
-  // //   "CDI": "id-8je6cg",
-  // //   "Alternance": "id-ounvt2",
-  // //   "Stage": "id-biv9tk",
-  // //   "CDD / Temporaire": "id-9e195s",
-  // //   "Autres": "id-biujqv",
-  // //   "Freelance": "id-hjkpgj",
-  // //   "Temps partiel": "id-dtf3uv",
-  // //   "VIE": "id-3l98u4",
-  // //   "Graduate program": "id-tk4gp3",
-  // //   "Bénévolat / Service civique": "id-asbjb0",
-  // //   "VDI": "id-71ta1k",
-  // // };
-  // // await page.click('[data-testid="jobs-search-select-filter-contract"]');
-  // // await page.waitForTimeout(getRandomInt(1000, 3000));
-  // //
-  // // const buttonId = jobTypeToButtonId[jobType];
-  // //
-  // // await page.waitForSelector(`#${buttonId}`);
-  // // await page.click(`#${buttonId}`);
-  // // END OF BLOCK CONTRACT JOBS
-  // // header + div div
-  // const jobLink = page.getByRole("link", {
-  //   name: "Find a job",
-  //   exact: true,
-  // });
-  // // const jobLink = page.locator('[data-testid="menu-jobs"] a');
-  // await jobLink.waitFor({ state: "attached" });
-  // await jobLink.click();
-  //
-  // const jobSearchButton = page.locator(
-  //   '[data-testid="jobs-home-search-field-query"]'
+  // await page.waitForTimeout(getRandomInt(2000, 5000));
+  // // BLOCK FOR TYPE OF JOBS
+  // await page.waitForSelector(
+  //   '[data-testid="jobs-search-select-filter-contract"]',
   // );
-  // await jobSearchButton.waitFor({ state: "visible" });
-  // await jobSearchButton.focus();
-  // await jobSearchButton.type(jobSearch, { delay: getRandomInt(100, 500) });
-  // await jobSearchButton.press("Enter");
+  // const jobTypeToButtonId = {
+  //   "CDI": "id-8je6cg",
+  //   "Alternance": "id-ounvt2",
+  //   "Stage": "id-biv9tk",
+  //   "CDD / Temporaire": "id-9e195s",
+  //   "Autres": "id-biujqv",
+  //   "Freelance": "id-hjkpgj",
+  //   "Temps partiel": "id-dtf3uv",
+  //   "VIE": "id-3l98u4",
+  //   "Graduate program": "id-tk4gp3",
+  //   "Bénévolat / Service civique": "id-asbjb0",
+  //   "VDI": "id-71ta1k",
+  // };
+  // await page.click('[data-testid="jobs-search-select-filter-contract"]');
+  // await page.waitForTimeout(getRandomInt(1000, 3000));
   //
-  // // await page.waitForTimeout(getRandomInt(2000, 5000));
+  // const buttonId = jobTypeToButtonId[jobType];
   //
-  // const clearLocationButton = page.locator(
-  //   '[data-testid="jobs-home-search-field-location"] + div button'
-  // );
-  // await clearLocationButton.click();
-  //
-  // // await page.waitForTimeout(getRandomInt(2000, 5000));
-  //
-  // const locationSearchButton = page.locator(
-  //   '[data-testid="jobs-home-search-field-location"]'
-  // );
-  // await locationSearchButton.focus();
-  // await locationSearchButton.type(locationSearch, {
-  //   delay: getRandomInt(100, 500),
-  // });
-  // await locationSearchButton.press("Enter");
+  // await page.waitForSelector(`#${buttonId}`);
+  // await page.click(`#${buttonId}`);
+  // END OF BLOCK CONTRACT JOBS
+  // header + div div
+  const jobLink = page.getByRole("link", {
+    name: "Find a job",
+    exact: true,
+  });
+  // const jobLink = page.locator('[data-testid="menu-jobs"] a');
+  await jobLink.waitFor({ state: "attached" });
+  await jobLink.click();
+
+  const jobSearchButton = page.locator(
+    '[data-testid="jobs-home-search-field-query"]'
+  );
+  await jobSearchButton.waitFor({ state: "visible" });
+  await jobSearchButton.focus();
+  await jobSearchButton.type(jobSearch, { delay: getRandomInt(100, 500) });
+  await jobSearchButton.press("Enter");
+
+  // await page.waitForTimeout(getRandomInt(2000, 5000));
+
+  const clearLocationButton = page.locator(
+    '[data-testid="jobs-home-search-field-location"] + div button'
+  );
+  await clearLocationButton.click();
+
+  // await page.waitForTimeout(getRandomInt(2000, 5000));
+
+  const locationSearchButton = page.locator(
+    '[data-testid="jobs-home-search-field-location"]'
+  );
+  await locationSearchButton.focus();
+  await locationSearchButton.type(locationSearch, {
+    delay: getRandomInt(100, 500),
+  });
+  await locationSearchButton.press("Enter");
 
   const jobs = [];
 
