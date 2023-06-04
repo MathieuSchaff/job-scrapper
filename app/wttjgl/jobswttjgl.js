@@ -16,11 +16,11 @@ const convertTimeString = require("./../utils/timeConverter");
 chromium.use(stealth);
 dotenv.config();
 
-// // const email = process.env.WTTJGL_EMAIL;
-// // const mdpWttjgl = process.env.WTTJGL_PASSWD;
-const website = process.env.WTTJGL_WEBSITE;
+const email = process.env.WTTJGL_EMAIL;
+const mdpWttjgl = process.env.WTTJGL_PASSWD;
+const website = "https://www.welcometothejungle.com/en";
 const jobSearch = process.env.WTTJGL_SEARCH;
-// const numOfPages = process.env.WTTJGL_NUMPAGES;
+const numOfPages = process.env.WTTJGL_NUMPAGES;
 const locationSearch = process.env.WTTJGL_LOCATION;
 const myContractType = process.env.WTTJGL_CONTRACT_TYPE;
 const remoteOrNot = process.env.WTTJGL_REMOTE_WORK_OPTION;
@@ -41,47 +41,48 @@ const remoteOrNot = process.env.WTTJGL_REMOTE_WORK_OPTION;
   await page.goto(website);
   // time out to wait for the page to load
   await page.mainFrame().waitForSelector("header");
-  console.log(myContractType);
-  console.log(typeof myContractType);
   // LOGIN BLOCK
-  // const loginButtons = page.locator('[data-testid="header-user-button-login"]');
-  // if ((await loginButtons.count()) > 0) {
-  //   console.log("entered login button is here");
-  //   const firstLoginButton = loginButtons.nth(0); // If you want the second, use nth(1)
-  //
-  //   // Wait for the button to be attached to the DOM
-  //   await firstLoginButton.waitFor({ state: "attached" });
-  //
-  //   // Click on the button
-  //   await firstLoginButton.click();
-  //
-  //   // Wait for the email input field to be rendered
-  //   const emailInput = page.locator('[data-testid="login-field-email"]');
-  //   await emailInput.waitFor({ state: "visible" });
-  //
-  //   // Type into the email input field with a delay between key presses
-  //   await emailInput.type(email, { delay: getRandomInt(50, 150) });
-  //
-  //   // Wait for the password input field to be rendered
-  //   const passwordInput = page.locator('[data-testid="login-field-password"]');
-  //   await passwordInput.waitFor({ state: "visible" });
-  //
-  //   // Type into the password input field with a delay between key presses
-  //   await passwordInput.type(mdpWttjgl, { delay: getRandomInt(50, 150) });
-  //
-  //   // Random delay
-  //
-  //   // Wait for the submit button to be rendered
-  //   const submitButton = await page.locator(
-  //     '[data-testid="login-button-submit"]'
-  //   );
-  //   await submitButton.waitFor({ state: "visible" });
-  //
-  //   // Click the submit button
-  //   await submitButton.click();
-  // }
+  if (email && mdpWttjgl) {
+    const loginButtons = page.locator(
+      '[data-testid="header-user-button-login"]'
+    );
+    if ((await loginButtons.count()) > 0) {
+      console.log("entered login button is here");
+      const firstLoginButton = loginButtons.nth(0); // If you want the second, use nth(1)
+
+      // Wait for the button to be attached to the DOM
+      await firstLoginButton.waitFor({ state: "attached" });
+
+      // Click on the button
+      await firstLoginButton.click();
+
+      // Wait for the email input field to be rendered
+      const emailInput = page.locator('[data-testid="login-field-email"]');
+      await emailInput.waitFor({ state: "visible" });
+
+      // Type into the email input field with a delay between key presses
+      await emailInput.type(email, { delay: getRandomInt(50, 150) });
+
+      // Wait for the password input field to be rendered
+      const passwordInput = page.locator(
+        '[data-testid="login-field-password"]'
+      );
+      await passwordInput.waitFor({ state: "visible" });
+
+      // Type into the password input field with a delay between key presses
+      await passwordInput.type(mdpWttjgl, { delay: getRandomInt(50, 150) });
+
+      // Random delay
+
+      // Wait for the submit button to be rendered
+      const submitButton = page.locator('[data-testid="login-button-submit"]');
+      await submitButton.waitFor({ state: "visible" });
+
+      // Click the submit button
+      await submitButton.click();
+    }
+  }
   // END OF LOGIN BLOCK
-  //
   //
   // Go to the job page
   const jobLink = page.getByRole("link", {
@@ -199,102 +200,101 @@ const remoteOrNot = process.env.WTTJGL_REMOTE_WORK_OPTION;
   }
   // END OF BLOCK CONTRACT JOBS
 
-  //
-  // const jobs = [];
-  //
-  // for (let i = 0; i < numOfPages; i++) {
-  //   await page.waitForSelector(".ais-Hits-list-item");
-  //
-  //   const articles = page.locator(".ais-Hits-list-item");
-  //   for (let j = 0; j < (await articles.count()); j++) {
-  //     let article = articles.nth(j);
-  //     // name of the company
-  //     const companyNameLocator = article.locator(
-  //       "div:nth-child(1) > div:nth-child(2) > div:nth-child(1)"
-  //     );
-  //     const jobCompanyName = await companyNameLocator.textContent();
-  //     // name of the job
-  //     const titleLocator = article.locator("h4");
-  //     const jobTitle = await titleLocator.textContent();
-  //     // location of the job
-  //     const locationLocator = article.locator(
-  //       "div:nth-child(1) > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > p"
-  //     );
-  //     const jobLocation = await locationLocator.textContent();
-  //     // link to the job
-  //     const anchorLocator = article.locator(
-  //       "div > div:nth-child(2) > div:nth-child(2) > a"
-  //     );
-  //     const href = await anchorLocator.getAttribute("href");
-  //     const jobLink = `https://www.welcometothejungle.com${href}`;
-  //     // time when job was posted
-  //     const timeDiv = article.locator(
-  //       "div > div:nth-child(2) > div:nth-child(2) > div:nth-child(4)"
-  //     );
-  //     const jobTime = await timeDiv.textContent();
-  //     const jobFormatedTime = convertTimeString(jobTime);
-  //     const tagsLocators = article.locator(
-  //       "div > div:nth-child(2) > div:nth-child(2) > div:nth-child(3) > div"
-  //     );
-  //     let tags = [];
-  //     for (let k = 0; k < (await tagsLocators.count()); k++) {
-  //       tags.push(await tagsLocators.nth(k).textContent());
-  //     }
-  //     jobs.push({
-  //       company: jobCompanyName,
-  //       title: jobTitle,
-  //       link: jobLink,
-  //       time: jobFormatedTime,
-  //       location: jobLocation,
-  //       tags,
-  //     });
-  //   }
-  //   await page.waitForTimeout(getRandomInt(1000, 3000));
-  //   const nextButton = page.locator(
-  //     'nav[aria-label="Pagination"] > ul > li:last-child > a'
-  //   );
-  //
-  //   if (await nextButton.count()) {
-  //     await nextButton.click({ delay: getRandomInt(100, 500) });
-  //   }
-  // }
-  // const maxConcurrentsPages = 5;
-  // const pagesQueue = jobs.slice(1, 5);
-  // const openPages = [];
-  // const jobsWithSections = [];
-  // // While there are jobs to process
-  // while (pagesQueue.length) {
-  //   // while there are open pages and there are jobs to process
-  //   // and the number of open pages is less than the max number of concurrent pages
-  //   while (openPages.length < maxConcurrentsPages && pagesQueue.length) {
-  //     const page = await context.newPage();
-  //     // get the first job from the queue
-  //     const job = pagesQueue.shift();
-  //     await page.goto(job.link);
-  //     // add the page to the open pages array and
-  //     // Store the page and the job in the same object, so they're linked
-  //     openPages.push({ page, job });
-  //     await page.waitForTimeout(getRandomInt(1000, 3000));
-  //   }
-  //   // Now that we've hit our concurrency limit or exhausted the queue, we can perform the scraping
-  //   for (const { page, job } of openPages) {
-  //     // Perform the scraping operation here
-  //     await page.waitForSelector("main section");
-  //
-  //     const sectionsFromJob = await page.$$eval("main section", (sections) => {
-  //       return sections.map((section) => section.textContent);
-  //     });
-  //     jobsWithSections.push({ ...job, details: sectionsFromJob });
-  //
-  //     // Close the page when we're done with it
-  //     await page.close();
-  //   }
-  //   // Clear the openPages array for the next batch
-  //   openPages.length = 0;
-  // }
-  // // Stringify the jobs array with indentation for readability
-  // const jobsJSON = JSON.stringify(jobsWithSections, null, 2);
-  //
-  // // Write to a file called jobs.json
-  // fs.writeFileSync("jobs.json", jobsJSON);
+  const jobs = [];
+
+  for (let i = 0; i < numOfPages; i++) {
+    await page.waitForSelector(".ais-Hits-list-item");
+
+    const articles = page.locator(".ais-Hits-list-item");
+    for (let j = 0; j < (await articles.count()); j++) {
+      let article = articles.nth(j);
+      // name of the company
+      const companyNameLocator = article.locator(
+        "div:nth-child(1) > div:nth-child(2) > div:nth-child(1)"
+      );
+      const jobCompanyName = await companyNameLocator.textContent();
+      // name of the job
+      const titleLocator = article.locator("h4");
+      const jobTitle = await titleLocator.textContent();
+      // location of the job
+      const locationLocator = article.locator(
+        "div:nth-child(1) > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > p"
+      );
+      const jobLocation = await locationLocator.textContent();
+      // link to the job
+      const anchorLocator = article.locator(
+        "div > div:nth-child(2) > div:nth-child(2) > a"
+      );
+      const href = await anchorLocator.getAttribute("href");
+      const jobLink = `https://www.welcometothejungle.com${href}`;
+      // time when job was posted
+      const timeDiv = article.locator(
+        "div > div:nth-child(2) > div:nth-child(2) > div:nth-child(4)"
+      );
+      const jobTime = await timeDiv.textContent();
+      const jobFormatedTime = convertTimeString(jobTime);
+      const tagsLocators = article.locator(
+        "div > div:nth-child(2) > div:nth-child(2) > div:nth-child(3) > div"
+      );
+      let tags = [];
+      for (let k = 0; k < (await tagsLocators.count()); k++) {
+        tags.push(await tagsLocators.nth(k).textContent());
+      }
+      jobs.push({
+        company: jobCompanyName,
+        title: jobTitle,
+        link: jobLink,
+        time: jobFormatedTime,
+        location: jobLocation,
+        tags,
+      });
+    }
+    await page.waitForTimeout(getRandomInt(1000, 3000));
+    const nextButton = page.locator(
+      'nav[aria-label="Pagination"] > ul > li:last-child > a'
+    );
+
+    if (await nextButton.count()) {
+      await nextButton.click({ delay: getRandomInt(100, 500) });
+    }
+  }
+  const maxConcurrentsPages = 5;
+  const pagesQueue = jobs.slice(1, 5);
+  const openPages = [];
+  const jobsWithSections = [];
+  // While there are jobs to process
+  while (pagesQueue.length) {
+    // while there are open pages and there are jobs to process
+    // and the number of open pages is less than the max number of concurrent pages
+    while (openPages.length < maxConcurrentsPages && pagesQueue.length) {
+      const page = await context.newPage();
+      // get the first job from the queue
+      const job = pagesQueue.shift();
+      await page.goto(job.link);
+      // add the page to the open pages array and
+      // Store the page and the job in the same object, so they're linked
+      openPages.push({ page, job });
+      await page.waitForTimeout(getRandomInt(1000, 3000));
+    }
+    // Now that we've hit our concurrency limit or exhausted the queue, we can perform the scraping
+    for (const { page, job } of openPages) {
+      // Perform the scraping operation here
+      await page.waitForSelector("main section");
+
+      const sectionsFromJob = await page.$$eval("main section", (sections) => {
+        return sections.map((section) => section.textContent);
+      });
+      jobsWithSections.push({ ...job, details: sectionsFromJob });
+
+      // Close the page when we're done with it
+      await page.close();
+    }
+    // Clear the openPages array for the next batch
+    openPages.length = 0;
+  }
+  // Stringify the jobs array with indentation for readability
+  const jobsJSON = JSON.stringify(jobsWithSections, null, 2);
+
+  // Write to a file called jobs.json
+  fs.writeFileSync("jobs.json", jobsJSON);
 })();
