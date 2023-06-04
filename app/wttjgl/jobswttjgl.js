@@ -1,4 +1,5 @@
 const { chromium } = require("playwright");
+const fs = require("fs");
 
 const dotenv = require("dotenv");
 const getRandomInt = require("./../utils/randomInt");
@@ -194,9 +195,9 @@ const website =
     }
   }
   const maxConcurrentsPages = 5;
-  const pagesQueue = jobs.slice();
+  const pagesQueue = jobs.slice(1, 5);
   const openPages = [];
-  const sections = [];
+  const jobsWithSections = [];
   // While there are jobs to process
   while (pagesQueue.length) {
     // while there are open pages and there are jobs to process
@@ -206,20 +207,20 @@ const website =
       // get the first job from the queue
       const job = pagesQueue.shift();
       await page.goto(job.link);
-      // add the page to the open pages array
-      openPages.push(page);
+      // add the page to the open pages array and
+      // Store the page and the job in the same object, so they're linked
+      openPages.push({ page, job });
       await page.waitForTimeout(getRandomInt(1000, 3000));
     }
     // Now that we've hit our concurrency limit or exhausted the queue, we can perform the scraping
-    for (const page of openPages) {
+    for (const { page, job } of openPages) {
       // Perform the scraping operation here
       await page.waitForSelector("main section");
 
       const sectionsFromJob = await page.$$eval("main section", (sections) => {
         return sections.map((section) => section.textContent);
       });
-      sections.push(sectionsFromJob);
-      console.log(sections);
+      jobsWithSections.push({ ...job, details: sectionsFromJob });
 
       // Close the page when we're done with it
       await page.close();
@@ -227,20 +228,9 @@ const website =
     // Clear the openPages array for the next batch
     openPages.length = 0;
   }
+  // Stringify the jobs array with indentation for readability
+  const jobsJSON = JSON.stringify(jobsWithSections, null, 2);
 
-  // console.log(jobs);
-  console.log(sections);
-  // Open a new page for each job
-  // const newPage = await context.newPage();
-  // await newPage.goto(link);
-  // const pageTitle = await page.title();
-  // console.log(`The title of the page is: ${pageTitle}`);
-  // await page.waitForSelector("main section");
-  //
-  // const sections = await page.$$eval("main section", (sections) => {
-  //   return sections.map((section) => section.textContent);
-  // });
-  //
-  // console.log(sections);
-  // await newPage.close();
+  // Write to a file called jobs.json
+  fs.writeFileSync("jobs.json", jobsJSON);
 })();
