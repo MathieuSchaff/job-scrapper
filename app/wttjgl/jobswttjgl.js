@@ -23,6 +23,8 @@ const jobSearch = process.env.WTTJGL_SEARCH;
 // const numOfPages = process.env.WTTJGL_NUMPAGES;
 const locationSearch = process.env.WTTJGL_LOCATION;
 const myContractType = process.env.WTTJGL_CONTRACT_TYPE;
+const remoteOrNot = process.env.WTTJGL_REMOTE_WORK_OPTION;
+
 (async () => {
   const browser = await chromium.launch({
     headless: false,
@@ -168,6 +170,31 @@ const myContractType = process.env.WTTJGL_CONTRACT_TYPE;
     await page.locator(`#${buttonId}`).click({ delay: getRandomInt(100, 500) });
     await page
       .locator('[data-testid="jobs-search-select-filter-contract"]')
+      .click({ delay: getRandomInt(100, 500) });
+  }
+  if (
+    remoteOrNot !== undefined &&
+    remoteOrNot !== null &&
+    remoteOrNot !== "all"
+  ) {
+    await page.waitForSelector("#jobs-search-filter-remote");
+    await page
+      .locator("#jobs-search-filter-remote")
+      .click({ delay: getRandomInt(100, 500) });
+    const remoteWorkOptions = {
+      no: "#jobs-search-filter-remote-no",
+      punctual: "#jobs-search-filter-remote-punctual",
+      partial: "#jobs-search-filter-remote-partial",
+      fulltime: "#jobs-search-filter-remote-fulltime",
+    };
+
+    // Let's say the user's input is stored in a variable called userInput
+
+    await page
+      .locator(remoteWorkOptions[userInput])
+      .click({ delay: getRandomInt(100, 500) });
+    await page
+      .locator("#jobs-search-modal-search-button")
       .click({ delay: getRandomInt(100, 500) });
   }
   // END OF BLOCK CONTRACT JOBS
