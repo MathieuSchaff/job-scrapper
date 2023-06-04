@@ -1,54 +1,32 @@
-# Clicking Contract Types
+## Using the .env File to Specify a Contract Type
 
-This project uses Playwright to interact with a webpage. One of the actions we support is clicking on a contract type button. Each type of contract has a corresponding button, identified by a unique id.
+You can specify a contract type in the .env file to search for jobs of a particular type. To do this, set the `CONTRACT_TYPE` variable in the .env file to either the name or the number of the desired contract type.
 
-There are several contract types available:
+Here is the list of contract types you can choose from:
 
-    Permanent contract
-    Work-study
-    Internship
-    Fixed-term / Temporary
-    Other
-    Freelance
-    Part-time
-    International Corporate Volunteer Program
-    Graduate program
-    Volunteer work
-    IDV
+1. Permanent contract
+2. Work-study
+3. Internship
+4. Fixed-term / Temporary
+5. Other
+6. Freelance
+7. Part-time
+8. International Corporate Volunteer Program
+9. Graduate program
+10. Volunteer work
+11. IDV
 
-Each of these contract types corresponds to a number from 1 to 11. You can click on a contract type either by its name or by its number.
+If you want to search by contract type, you can set `CONTRACT_TYPE` to either the name of the contract type (as a string)
+or its number in the list above (as a number).
+For example: CONTRACT_TYPE="Internship" // is the same as :WTTJGL_CONTRACT_TYPE=3
 
-To click on a contract type, call the function clickContractType and pass in either the name of the contract type as a string or its number.
+If you don't specify a contract type, the script will search for all types of jobs.
+You can also specify WTTJGL_CONTRACT_TYPE=all but it is not necessary
 
-For example:
+This is achieved using the `getContractTypeId` function in the script. This function takes the contract type specified in the .env file,
+looks up the corresponding id in the `contractTypes` array, and returns the id.
+If the specified contract type is a number, the function treats it as an index into the `contractTypes` array.
+If the contract type is a string, the function finds the object in the `contractTypes` array with a matching `name` property.
 
-javascript
-
-await clickContractType(2); // by index
-// or
-await clickContractType("Internship"); // by name
-
-This will click on the corresponding contract type button on the webpage.
-Using .env Variables
-
-The clickContractType function uses a variable that is loaded from a .env file. This project uses the dotenv library to load these environment variables.
-
-Make sure you have a .env file in the root of your project with the contract type you want to select. It should look something like this:
-
-bash
-
-CONTRACT_TYPE=2
-
-### or
-
-CONTRACT_TYPE="Internship"
-
-Then, you can call clickContractType with the CONTRACT_TYPE environment variable. This allows you to easily change the contract type to select without changing the code.
-
-javascript
-
-require('dotenv').config();
-const contractType = process.env.CONTRACT_TYPE;
-await clickContractType(contractType);
-
-Note that the .env file should not be committed to your version control system. It is usually added to the .gitignore file to prevent it from being committed.
+Note: If you specify a contract type that isn't in the list above, or a number that's outside the range of the list,
+the `getContractTypeId` function will return `null`, and the script will search for all types of jobs.
