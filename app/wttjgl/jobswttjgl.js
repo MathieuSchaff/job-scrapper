@@ -244,8 +244,8 @@ const remoteOrNot = process.env.WTTJGL_REMOTE_WORK_OPTION;
         company: jobCompanyName,
         title: jobTitle,
         link: jobLink,
-        time: jobFormatedTime,
         location: jobLocation,
+        time: jobFormatedTime,
         tags,
       });
     }
