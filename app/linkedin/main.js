@@ -1,5 +1,6 @@
 const { chromium } = require("playwright-extra");
 const fs = require("fs");
+const getUniqueFilename = require("./../utils/uniqueFileName");
 // Load the stealth plugin and use defaults (all tricks to hide playwright usage)
 // Note: playwright-extra is compatible with most puppeteer-extra plugins
 const stealth = require("puppeteer-extra-plugin-stealth")();
@@ -10,7 +11,6 @@ chromium.use(stealth);
 
 dotenv.config();
 const getRandomInt = require("./../utils/randomInt");
-// const convertTimeString = require("./../utils/timeConverter");
 const linkedinJobSearch = process.env.LKD_JOB;
 const linkedinLocation = process.env.LKD_LOC;
 const linkedinEmail = process.env.LKD_EMAIL;
@@ -19,11 +19,10 @@ const lkdNumPages = process.env.LKD_NUMPAGES;
 const linkedinRemote = process.env.LKD_REMOTE;
 const datePosted = process.env.LKD_DATE;
 const experienceLevel = process.env.LKD_EXP;
-const website = "https://www.linkedin.com/login";
 
 chromium.use(stealth);
 dotenv.config();
-(async () => {
+async function linkedinScrapper() {
   const browser = await chromium.launch({
     headless: false,
     slowMo: 50,
@@ -35,7 +34,7 @@ dotenv.config();
     permissions: ["geolocation"],
   });
   const page = await context.newPage();
-  await page.goto(website);
+  await page.goto("https://www.linkedin.com/login");
   console.log("Page loaded.");
   // LOGIN BLOCK
   await page.waitForTimeout(getRandomInt(2000, 5000));
@@ -173,8 +172,14 @@ dotenv.config();
     numPages++;
   }
   console.log(jobs);
-  const jobsJSON = JSON.stringify(jobs);
-
+  // Resolve the paths
+  const projectRoot = path.resolve(__dirname, "..", "..");
+  const dataDir = path.join(projectRoot, "data");
+  const filename = "jobs";
+  const extension = ".json";
+  const uniqueFilename = getUniqueFilename(dataDir, filename, extension);
   // Write to a file called jobs.json
-  fs.writeFileSync("jobs.json", jobsJSON);
-})();
+  fs.writeFileSync(`${basePath}/${uniqueFilename}`, jobsJSON);
+}
+// export the function
+module.exports = { linkedinScrapper };
