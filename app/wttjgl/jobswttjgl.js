@@ -1,8 +1,7 @@
-// const { chromium } = require("playwright");
 // playwright-extra is a drop-in replacement for playwright,
 // it augments the installed playwright with plugin functionality
 const { chromium } = require("playwright-extra");
-
+const { getUniqueFilename } = require("./../utils/uniqueFileName");
 // Load the stealth plugin and use defaults (all tricks to hide playwright usage)
 // Note: playwright-extra is compatible with most puppeteer-extra plugins
 const stealth = require("puppeteer-extra-plugin-stealth")();
@@ -24,8 +23,7 @@ const numOfPages = process.env.WTTJGL_NUMPAGES;
 const locationSearch = process.env.WTTJGL_LOCATION;
 const myContractType = process.env.WTTJGL_CONTRACT_TYPE;
 const remoteOrNot = process.env.WTTJGL_REMOTE_WORK_OPTION;
-
-(async () => {
+async function wttjglScrapper() {
   const browser = await chromium.launch({
     headless: false,
     slowMo: 50,
@@ -293,8 +291,13 @@ const remoteOrNot = process.env.WTTJGL_REMOTE_WORK_OPTION;
     openPages.length = 0;
   }
   // Stringify the jobs array with indentation for readability
-  const jobsJSON = JSON.stringify(jobsWithSections, null, 2);
 
+  const projectRoot = path.resolve(__dirname, "..", "..");
+  const dataDir = path.join(projectRoot, "data");
+  const filename = "wttjglJobs";
+  const extension = ".json";
+  const uniqueFilename = getUniqueFilename(dataDir, filename, extension);
   // Write to a file called jobs.json
-  fs.writeFileSync("jobs.json", jobsJSON);
-})();
+  fs.writeFileSync(`${basePath}/${uniqueFilename}`, jobsJSON);
+}
+module.exports = { wttjglScrapper };
