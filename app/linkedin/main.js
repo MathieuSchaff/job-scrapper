@@ -175,7 +175,7 @@ async function linkedinScrapper() {
   // Resolve the paths
   const projectRoot = path.resolve(__dirname, "..", "..");
   const dataDir = path.join(projectRoot, "data");
-  const filename = "jobs";
+  const filename = "linkedinJobs";
   const extension = ".json";
   const uniqueFilename = getUniqueFilename(dataDir, filename, extension);
   // Write to a file called jobs.json
