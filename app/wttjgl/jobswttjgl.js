@@ -36,7 +36,7 @@ async function wttjglScrapper() {
     permissions: ["geolocation"],
   });
   const page = await context.newPage();
-  await page.goto(website);
+  await page.goto("https://www.welcometothejungle.com/en");
   // time out to wait for the page to load
   await page.mainFrame().waitForSelector("header");
   // LOGIN BLOCK
