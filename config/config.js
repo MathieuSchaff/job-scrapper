@@ -36,7 +36,7 @@ const config = {
     datePosted: 1,
     experienceLevel: 4,
   },
-  welcometothejungle: {
+  welcomeToTheJungle: {
     email,
     password: "mySecretPassword",
     contractType: "all",
