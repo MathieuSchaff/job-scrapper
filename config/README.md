@@ -67,7 +67,6 @@ The Welcome to the Jungle configuration includes the following properties:
 
 - `remoteWorkOption`: The remote work option filter. Available options:
   - `all`: All remote work options
-  - `no`: Unknown
   - `punctual`: Occasional remote
   - `partial`: Partial remote
   - `fulltime`: Open to full remote
