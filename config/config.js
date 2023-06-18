@@ -20,7 +20,7 @@ const numOfPages = 1;
  * @property {string} welcometothejungle.email - The welcometothejungle email
  * @property {string} welcometothejungle.password - The welcometothejungle password
  * @property {string} welcometothejungle.contractType - The contract type filter
- * @property {string} welcometothejungle.remoteWorkOption - The remote work option filter
+ * @property {string} welcometothejungle.remote- The remote work option filter
  *
  */
 const config = {
@@ -37,10 +37,15 @@ const config = {
     experienceLevel: 4,
   },
   welcomeToTheJungle: {
-    email,
+    email: "myEmail@email.com",
     password: "mySecretPassword",
     contractType: "all",
-    remoteWorkOption: "all",
+    remote: "all",
+  },
+  indeed: {
+    contractType: 1,
+    remote: 1,
+    datePosted: 1,
   },
 };
 
