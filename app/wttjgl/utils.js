@@ -24,7 +24,7 @@ const contractTypes = [
   { name: "IDV", id: "jobs-search-filter-contract-IDV" },
 ];
 
-function getContractTypeId(contractType) {
+export default function getContractTypeId(contractType) {
   if (!contractType) return null;
   // If contractType is an array of numbers, get the corresponding IDs
   if (Array.isArray(contractType)) {
@@ -43,4 +43,3 @@ function getContractTypeId(contractType) {
     return contract?.id || null;
   }
 }
-module.exports = { getContractTypeId };
