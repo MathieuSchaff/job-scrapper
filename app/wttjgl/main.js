@@ -57,50 +57,50 @@ export async function wttjglScrapper({
   // time out to wait for the page to load
   await page.mainFrame().waitForSelector("header");
   // LOGIN BLOCK
-  // if (welcomeToTheJungle.email && welcomeToTheJungle.password) {
-  //   const loginButtons = page.locator(
-  //     '[data-testid="header-user-button-login"]'
-  //   );
-  //   if ((await loginButtons.count()) > 0) {
-  //     console.log("entered login button is here");
-  //     const firstLoginButton = loginButtons.nth(0); // If you want the second, use nth(1)
-  //
-  //     // Wait for the button to be attached to the DOM
-  //     await firstLoginButton.waitFor({ state: "attached" });
-  //
-  //     // Click on the button
-  //     await firstLoginButton.click();
-  //
-  //     // Wait for the email input field to be rendered
-  //     const emailInput = page.locator('[data-testid="login-field-email"]');
-  //     await emailInput.waitFor({ state: "visible" });
-  //
-  //     // Type into the email input field with a delay between key presses
-  //     await emailInput.type(welcomeToTheJungle.email, {
-  //       delay: getRandomInt(50, 150),
-  //     });
-  //
-  //     // Wait for the password input field to be rendered
-  //     const passwordInput = page.locator(
-  //       '[data-testid="login-field-password"]'
-  //     );
-  //     await passwordInput.waitFor({ state: "visible" });
-  //
-  //     // Type into the password input field with a delay between key presses
-  //     await passwordInput.type(welcomeToTheJungle.password, {
-  //       delay: getRandomInt(50, 150),
-  //     });
-  //
-  //     // Random delay
-  //
-  //     // Wait for the submit button to be rendered
-  //     const submitButton = page.locator('[data-testid="login-button-submit"]');
-  //     await submitButton.waitFor({ state: "visible" });
-  //
-  //     // Click the submit button
-  //     await submitButton.click();
-  //   }
-  // }
+  if (welcomeToTheJungle.email && welcomeToTheJungle.password) {
+    const loginButtons = page.locator(
+      '[data-testid="header-user-button-login"]'
+    );
+    if ((await loginButtons.count()) > 0) {
+      console.log("entered login button is here");
+      const firstLoginButton = loginButtons.nth(0); // If you want the second, use nth(1)
+
+      // Wait for the button to be attached to the DOM
+      await firstLoginButton.waitFor({ state: "attached" });
+
+      // Click on the button
+      await firstLoginButton.click();
+
+      // Wait for the email input field to be rendered
+      const emailInput = page.locator('[data-testid="login-field-email"]');
+      await emailInput.waitFor({ state: "visible" });
+
+      // Type into the email input field with a delay between key presses
+      await emailInput.type(welcomeToTheJungle.email, {
+        delay: getRandomInt(50, 150),
+      });
+
+      // Wait for the password input field to be rendered
+      const passwordInput = page.locator(
+        '[data-testid="login-field-password"]'
+      );
+      await passwordInput.waitFor({ state: "visible" });
+
+      // Type into the password input field with a delay between key presses
+      await passwordInput.type(welcomeToTheJungle.password, {
+        delay: getRandomInt(50, 150),
+      });
+
+      // Random delay
+
+      // Wait for the submit button to be rendered
+      const submitButton = page.locator('[data-testid="login-button-submit"]');
+      await submitButton.waitFor({ state: "visible" });
+
+      // Click the submit button
+      await submitButton.click();
+    }
+  }
   // END OF LOGIN BLOCK
   //
   // Go to the job page
