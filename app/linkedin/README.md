@@ -3,32 +3,6 @@ Project
 This project demonstrates a basic automated browsing sequence using Puppeteer and Playwright in Node.js, with the specific goal of navigating and interacting with LinkedIn's job search. This tool is configurable through environment variables.
 Environment Variables
 
-    LDK_USERNAME - Your LinkedIn username, typically an email address.
-
-    LDK_PASSWORD - Your LinkedIn password.
-
-    LDK_KEYWORD - The keyword you want to use for searching jobs on LinkedIn.
-
-    LDK_LOCATION - The location you want to use for searching jobs on LinkedIn.
-
-    LDK_REMOTE - The number representing your preferred date posted filter. Here are the possible values:
-        1: Past 24 hours
-        2: Past week
-        3: Past month
-
-    LDK_EXPERIENCE - The number representing your preferred experience level filter. Here are the possible values:
-        1: Internship
-        2: Entry level
-        3: Associate
-        4: Mid-Senior level
-        5: Director
-        6: Executive
-
-    LDK_WORKPLACE - The number representing your preferred workplace type filter. Here are the possible values:
-        1: On-site
-        2: Remote
-        3: Hybrid
-
 Instructions
 
 To run this project, make sure you have Node.js installed, then follow these steps:
