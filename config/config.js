@@ -23,7 +23,7 @@ const numOfPages = 1;
  * @property {string} welcometothejungle.remote- The remote work option filter
  *
  */
-const config = {
+export const config = {
   common: {
     jobSearch,
     location,
@@ -48,5 +48,3 @@ const config = {
     datePosted: 1,
   },
 };
-
-module.exports = config;
