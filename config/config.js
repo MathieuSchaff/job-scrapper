@@ -37,8 +37,8 @@ const config = {
     experienceLevel: 4,
   },
   welcomeToTheJungle: {
-    email: "myEmail@email.com",
-    password: "mySecretPassword",
+    // email: "myEmail@email.com",
+    // password: "mySecretPassword",
     contractType: "all",
     remote: "all",
   },
