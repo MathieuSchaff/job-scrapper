@@ -247,7 +247,7 @@ async function wttjglScrapper({
     }
   }
   const maxConcurrentsPages = 5;
-  const pagesQueue = jobs.slice(1, 5);
+  const pagesQueue = jobs.slice(1);
   const openPages = [];
   const jobsWithSections = [];
   // While there are jobs to process
@@ -299,4 +299,3 @@ async function wttjglScrapper({
   fs.writeFile(path.join(dataDir, uniqueFilename), dataToWrite);
 }
 wttjglScrapper({ common: commonDefault, welcomeToTheJungle: {} });
-// module.exports = { wttjglScrapper };
