@@ -35,7 +35,7 @@ const commonDefault = {
   location: "France",
   numOfPages: 1,
 };
-async function wttjglScrapper({
+export async function wttjglScrapper({
   common = commonDefault,
   welcomeToTheJungle = {},
 }) {
@@ -298,4 +298,4 @@ async function wttjglScrapper({
   // Write to the file
   fs.writeFile(path.join(dataDir, uniqueFilename), dataToWrite);
 }
-wttjglScrapper({ common: commonDefault, welcomeToTheJungle: {} });
+// wttjglScrapper({ common: commonDefault, welcomeToTheJungle: {} });
