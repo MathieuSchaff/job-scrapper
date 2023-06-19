@@ -3,7 +3,7 @@ const fs = require("fs");
 const getUniqueFilename = require("./../utils/uniqueFileName");
 // Load the stealth plugin and use defaults (all tricks to hide playwright usage)
 // Note: playwright-extra is compatible with most puppeteer-extra plugins
-const stealth = require("puppeteer-extra-plugin-stealth")();
+const stealth = require("puppeteer-extra-plugin-stealth");
 // const fs = require("fs");
 
 const dotenv = require("dotenv");
