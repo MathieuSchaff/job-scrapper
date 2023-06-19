@@ -1,4 +1,4 @@
-function convertTimeString(timeStr) {
+export default function convertTimeString(timeStr) {
   if (!timeStr) return null;
   if (timeStr === "Promoted") return "No time/Promoted";
   if (timeStr === "hier") {
@@ -22,4 +22,3 @@ function convertTimeString(timeStr) {
 
   return timeStr;
 }
-module.exports = convertTimeString;

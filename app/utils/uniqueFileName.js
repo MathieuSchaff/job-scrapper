@@ -1,6 +1,10 @@
-const fs = require("fs");
+import fs from "fs";
 
-function getUniqueFilename(basePath, filename, extension = ".json") {
+export default function getUniqueFilename(
+  basePath,
+  filename,
+  extension = ".json"
+) {
   let counter = 1;
   let newFilename = `${filename}${extension}`;
 
@@ -11,4 +15,3 @@ function getUniqueFilename(basePath, filename, extension = ".json") {
 
   return newFilename;
 }
-module.exports = getUniqueFilename;
